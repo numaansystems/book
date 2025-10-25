@@ -1,0 +1,14 @@
+/workspaces/book/backend/src/main/java/com/example/budgetbook/BackendApplication.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/config/DataInitializer.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/controller/BudgetCodeController.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/controller/CategoryController.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/controller/SnappyController.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/model/Agency.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/model/BudgetCode.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/model/Category.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/model/Snappy.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/repository/AgencyRepository.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/repository/BudgetCodeRepository.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/repository/CategoryRepository.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/repository/SnappyRepository.java
+/workspaces/book/backend/src/main/java/com/example/budgetbook/service/JasperPdfService.java
