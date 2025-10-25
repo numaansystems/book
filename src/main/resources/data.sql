@@ -13,7 +13,7 @@ INSERT INTO budget_codes (id, code, description, agency_id) VALUES (4, 'BC004', 
 INSERT INTO budget_codes (id, code, description, agency_id) VALUES (5, 'BC005', 'Medical Supplies', 2);
 
 -- Insert active biennium (2023-2025, currently in first year)
-INSERT INTO biennium (id, start_year, end_year, current_fiscal_year, active) VALUES (1, 2023, 2024, 2023, true);
+INSERT INTO biennium (id, start_year, end_year, current_fiscal_year, active) VALUES (1, 2023, 2025, 2023, true);
 
 -- Insert sample categories
 INSERT INTO categories (id, title, description, agency_id, created_by, updated_by, created_at, updated_at) 

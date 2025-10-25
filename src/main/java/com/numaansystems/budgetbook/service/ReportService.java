@@ -27,6 +27,10 @@ public class ReportService {
 
             // Determine template path based on current fiscal year
             String templateFolder = biennium.isFirstYear() ? "year1" : "year2";
+            
+            // Note: This assumes .jasper (pre-compiled) files exist.
+            // For .jrxml files, use JasperCompileManager.compileReport() first:
+            // JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlInputStream);
             String templatePath = "templates/" + templateFolder + "/" + reportName + ".jasper";
 
             // Load the compiled report template

@@ -76,6 +76,10 @@ public class SnappyService {
 
     @Transactional
     public void deleteSnappy(Long id) {
+        Snappy snappy = snappyRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Snappy not found"));
+        
+        validateYearAccess(snappy.getFiscalYear());
         snappyRepository.deleteById(id);
     }
 
