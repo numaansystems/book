@@ -1,6 +1,7 @@
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/repository/SnappyRepository.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/controller/ViewController.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/model/Agency.java
+/home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/config/SecurityConfig.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/model/Category.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/BackendApplication.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/config/DataInitializer.java
@@ -12,5 +13,6 @@
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/repository/BudgetCodeRepository.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/controller/BudgetCodeController.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/service/JasperPdfService.java
+/home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/config/LocalSecurityConfig.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/repository/AgencyRepository.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/model/BudgetCode.java

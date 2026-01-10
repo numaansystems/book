@@ -15,6 +15,10 @@ A comprehensive budget management application built with Spring Boot 3 backend a
 
 ### Technical Features
 - **Spring Boot 3**: Modern Java backend with JPA/Hibernate
+- **Azure AD Authentication**: Secure OAuth2/OpenID Connect integration
+  - Single Sign-On (SSO) support
+  - Configurable for production with Azure AD
+  - Local development mode without authentication
 - **Thymeleaf**: Server-side template engine with enhanced UX
   - Custom spinner components for async operations
   - Responsive design with modern CSS
@@ -115,23 +119,46 @@ book/
 ### Single Application Build & Run (Recommended)
 
 The project now runs as **one unified Spring Boot application** that serves both:
-- Thymeleaf-based UI at `/categories`
+- Thymeleaf-based UI at `/snappies` and `/categories`
 - Vue.js-based UI at `/vue/`
 
 ```bash
 # Build entire project (frontend + backend combined)
 mvn clean package
 
-# Run the unified application
+# Run the unified application (local development mode - no authentication)
 cd backend
-mvn spring-boot:run
+mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
 Application starts on `http://localhost:8080`
 
+### Authentication
+
+The application supports **Azure AD authentication** for production use.
+
+**Local Development (No Authentication)**
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+```
+
+**With Azure AD Authentication**
+```bash
+# Set environment variables
+export AZURE_CLIENT_ID=your-client-id
+export AZURE_CLIENT_SECRET=your-client-secret
+export AZURE_TENANT_ID=your-tenant-id
+
+# Run application
+mvn spring-boot:run
+```
+
+For detailed Azure AD setup instructions, see [AZURE_AD_SETUP.md](AZURE_AD_SETUP.md)
+
 ### Access the Application
 
 **Thymeleaf UI (Server-Side Rendered)**
+- Snappy Management (default): `http://localhost:8080/snappies`
 - Categories Management: `http://localhost:8080/categories`
 - Features: Modern CSS, spinner components, table sorting, search/filter
 

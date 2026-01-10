@@ -1,0 +1,21 @@
+# Local development profile - no Azure AD authentication required
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:budgetdb;DB_CLOSE_DELAY=-1
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  # Disable OAuth2 for local development
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration
+
+jasper:
+  templates-path: classpath:jrxml
