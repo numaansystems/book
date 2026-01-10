@@ -109,39 +109,39 @@ book/
 
 ### Prerequisites
 - Java 17+
-- Node.js 18+ (automatically downloaded by Maven)
 - Maven 3.6+
+- Node.js 18+ (automatically downloaded by Maven during build)
 
-### Build
+### Single Application Build & Run (Recommended)
+
+The project now runs as **one unified Spring Boot application** that serves both:
+- Thymeleaf-based UI at `/categories`
+- Vue.js-based UI at `/vue/`
+
 ```bash
-# Build entire project (backend + frontend)
-mvn clean install
+# Build entire project (frontend + backend combined)
+mvn clean package
 
-# Build specific module
-mvn clean install -pl backend
-mvn clean install -pl frontend
-```
-
-### Run Backend
-```bash
+# Run the unified application
 cd backend
 mvn spring-boot:run
 ```
 
-Backend will start on `http://localhost:8080`
+Application starts on `http://localhost:8080`
 
-### Access Thymeleaf UI
-Once the backend is running, access the Thymeleaf-based UI at:
+### Access the Application
+
+**Thymeleaf UI (Server-Side Rendered)**
 - Categories Management: `http://localhost:8080/categories`
+- Features: Modern CSS, spinner components, table sorting, search/filter
 
-The Thymeleaf implementation includes:
-- **Responsive Design**: Modern CSS-based responsive layout
-- **Spinner Components**: Visual feedback during REST API calls
-- **Table Features**: Sorting by column, search/filter functionality
-- **Form Validation**: Client-side validation with user feedback
-- **Success/Error Messages**: Auto-dismissing alerts for user actions
+**Vue.js UI (Single Page Application)**
+- Vue Application: `http://localhost:8080/vue/`
+- Features: Reactive components, client-side routing
 
-### Run Vue Frontend (Development)
+### Development Mode
+
+For Vue.js frontend development with hot-reload:
 ```bash
 cd frontend
 npm run dev
