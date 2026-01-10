@@ -535,6 +535,7 @@
         let snappiesData = [];
         let budgetCodes = [];
         let categories = [];
+        let isYear1ReadOnly = false;
 
         function showButtonSpinner(button) {
             button.disabled = true;
@@ -552,6 +553,40 @@
             if (spinner) spinner.style.display = 'none';
         }
 
+        function checkFiscalYearStatus() {
+            if (!currentFiscalYear) return;
+            
+            fetch('/api/fiscal-year/is-second-year?year=' + currentFiscalYear)
+                .then(r => r.json())
+                .then(data => {
+                    isYear1ReadOnly = data.year1ReadOnly;
+                })
+                .catch(error => {
+                    console.error('Error checking fiscal year status:', error);
+                    isYear1ReadOnly = false;
+                });
+        }
+
+        function setYear1FieldsReadOnly(readOnly) {
+            const year1Fields = [
+                'y1RecurringReq', 'y1NonRecurringReq',
+                'y1RecurringRec', 'y1NonRecurringRec',
+                'y1RecurringFte', 'y1NonRecurringFte'
+            ];
+            
+            year1Fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.readOnly = readOnly;
+                    if (readOnly) {
+                        field.classList.add('readonly');
+                    } else {
+                        field.classList.remove('readonly');
+                    }
+                }
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Load agencies
             loadAgencies();
@@ -559,6 +594,7 @@
             // Fiscal year selection handler
             document.getElementById('fiscalYearSelect').addEventListener('change', function() {
                 currentFiscalYear = this.value;
+                checkFiscalYearStatus();
                 if (currentFiscalYear && currentAgencyId) {
                     loadSnappies();
                 }
@@ -727,6 +763,9 @@
                     document.getElementById('y2NonRecurringRec').value = snappy.y2NonRecurringRec || 0;
                     document.getElementById('y2RecurringFte').value = snappy.y2RecurringFte || 0;
                     document.getElementById('y2NonRecurringFte').value = snappy.y2NonRecurringFte || 0;
+                    
+                    // Set Year 1 fields read-only if we're in Year 2
+                    setYear1FieldsReadOnly(isYear1ReadOnly);
                     
                     document.getElementById('editModal').classList.add('show');
                 })

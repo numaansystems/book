@@ -10,6 +10,7 @@
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/model/Snappy.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/repository/CategoryRepository.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/controller/SnappyController.java
+/home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/controller/FiscalYearController.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/repository/BudgetCodeRepository.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/controller/BudgetCodeController.java
 /home/runner/work/book/book/backend/src/main/java/com/example/budgetbook/service/JasperPdfService.java

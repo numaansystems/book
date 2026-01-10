@@ -1,6 +1,7 @@
 com/example/budgetbook/BackendApplication.class
 com/example/budgetbook/model/Category.class
 com/example/budgetbook/config/LocalSecurityConfig.class
+com/example/budgetbook/controller/FiscalYearController.class
 com/example/budgetbook/controller/ViewController.class
 com/example/budgetbook/service/JasperPdfService.class
 com/example/budgetbook/config/DataInitializer.class
