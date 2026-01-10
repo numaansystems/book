@@ -18,6 +18,13 @@ public class SnappyController {
     @GetMapping("/by-agency/{agencyId}")
     public List<Snappy> byAgency(@PathVariable Long agencyId) { return snappyRepository.findByAgencyId(agencyId); }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Snappy> getById(@PathVariable Long id) {
+        return snappyRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<Snappy> create(@RequestBody Snappy s) {
         Snappy saved = snappyRepository.save(s);

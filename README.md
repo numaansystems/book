@@ -1,6 +1,6 @@
 # Budget Book Application
 
-A comprehensive budget management application built with Spring Boot 3 backend and Vue.js frontend.
+A comprehensive budget management application built with Spring Boot 3 backend and multiple frontend options (Thymeleaf and Vue.js).
 
 ## Features
 
@@ -15,7 +15,15 @@ A comprehensive budget management application built with Spring Boot 3 backend a
 
 ### Technical Features
 - **Spring Boot 3**: Modern Java backend with JPA/Hibernate
-- **Vue.js 3**: Reactive frontend with modern JavaScript
+- **Azure AD Authentication**: Secure OAuth2/OpenID Connect integration
+  - Single Sign-On (SSO) support
+  - Configurable for production with Azure AD
+  - Local development mode without authentication
+- **Thymeleaf**: Server-side template engine with enhanced UX
+  - Custom spinner components for async operations
+  - Responsive design with modern CSS
+  - Table sorting and search functionality
+- **Vue.js 3**: Reactive frontend with modern JavaScript (alternative frontend)
 - **Maven Multi-module**: Single build process for both frontend and backend
 - **H2 Database**: In-memory database for development (easily configurable for production)
 - **Jasper Reports**: Professional PDF report generation
@@ -30,19 +38,28 @@ book/
 │   │   │   ├── Agency.java
 │   │   │   ├── BudgetCode.java
 │   │   │   ├── Category.java
-│   │   │   ├── Snappy.java
-│   │   │   └── FiscalYear.java
+│   │   │   └── Snappy.java
 │   │   ├── repository/                # Data access layer
 │   │   ├── service/                   # Business logic
-│   │   ├── controller/                # REST endpoints
+│   │   ├── controller/                # REST and View controllers
+│   │   │   ├── AgencyController.java
+│   │   │   ├── CategoryController.java
+│   │   │   ├── SnappyController.java
+│   │   │   └── ViewController.java
 │   │   └── BackendApplication.java
 │   └── src/main/resources/
-│       ├── application.properties
-│       ├── data.sql                   # Sample data
-│       └── jrxml/                     # Jasper report templates
-│           ├── year1/
-│           └── year2/
-├── frontend/                          # Vue.js application
+│       ├── application.yml
+│       ├── templates/                 # Thymeleaf templates
+│       │   ├── categories-simple.html # Categories management page
+│       │   ├── categories.html        # Advanced version (with CDN)
+│       │   └── layout.html
+│       └── static/                    # Static resources
+│           ├── css/
+│           │   └── custom.css
+│           └── js/
+│               ├── spinner.js         # Reusable spinner component
+│               └── categories.js      # Category page logic
+├── frontend/                          # Vue.js application (alternative)
 │   ├── src/
 │   │   ├── pages/
 │   │   │   ├── CategoryPage.vue
@@ -96,28 +113,62 @@ book/
 
 ### Prerequisites
 - Java 17+
-- Node.js 18+ (automatically downloaded by Maven)
 - Maven 3.6+
+- Node.js 18+ (automatically downloaded by Maven during build)
 
-### Build
+### Single Application Build & Run (Recommended)
+
+The project now runs as **one unified Spring Boot application** that serves both:
+- Thymeleaf-based UI at `/snappies` and `/categories`
+- Vue.js-based UI at `/vue/`
+
 ```bash
-# Build entire project (backend + frontend)
-mvn clean install
+# Build entire project (frontend + backend combined)
+mvn clean package
 
-# Build specific module
-mvn clean install -pl backend
-mvn clean install -pl frontend
+# Run the unified application (local development mode - no authentication)
+cd backend
+mvn spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
-### Run Backend
+Application starts on `http://localhost:8080`
+
+### Authentication
+
+The application supports **Azure AD authentication** for production use.
+
+**Local Development (No Authentication)**
 ```bash
-cd backend
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+```
+
+**With Azure AD Authentication**
+```bash
+# Set environment variables
+export AZURE_CLIENT_ID=your-client-id
+export AZURE_CLIENT_SECRET=your-client-secret
+export AZURE_TENANT_ID=your-tenant-id
+
+# Run application
 mvn spring-boot:run
 ```
 
-Backend will start on `http://localhost:8080`
+For detailed Azure AD setup instructions, see [AZURE_AD_SETUP.md](AZURE_AD_SETUP.md)
 
-### Run Frontend (Development)
+### Access the Application
+
+**Thymeleaf UI (Server-Side Rendered)**
+- Snappy Management (default): `http://localhost:8080/snappies`
+- Categories Management: `http://localhost:8080/categories`
+- Features: Modern CSS, spinner components, table sorting, search/filter
+
+**Vue.js UI (Single Page Application)**
+- Vue Application: `http://localhost:8080/vue/`
+- Features: Reactive components, client-side routing
+
+### Development Mode
+
+For Vue.js frontend development with hot-reload:
 ```bash
 cd frontend
 npm run dev
