@@ -1,6 +1,6 @@
 # Budget Book Application
 
-A comprehensive budget management application built with Spring Boot 3 backend and Vue.js frontend.
+A comprehensive budget management application built with Spring Boot 3 backend and multiple frontend options (Thymeleaf and Vue.js).
 
 ## Features
 
@@ -15,7 +15,11 @@ A comprehensive budget management application built with Spring Boot 3 backend a
 
 ### Technical Features
 - **Spring Boot 3**: Modern Java backend with JPA/Hibernate
-- **Vue.js 3**: Reactive frontend with modern JavaScript
+- **Thymeleaf**: Server-side template engine with enhanced UX
+  - Custom spinner components for async operations
+  - Responsive design with modern CSS
+  - Table sorting and search functionality
+- **Vue.js 3**: Reactive frontend with modern JavaScript (alternative frontend)
 - **Maven Multi-module**: Single build process for both frontend and backend
 - **H2 Database**: In-memory database for development (easily configurable for production)
 - **Jasper Reports**: Professional PDF report generation
@@ -30,19 +34,28 @@ book/
 │   │   │   ├── Agency.java
 │   │   │   ├── BudgetCode.java
 │   │   │   ├── Category.java
-│   │   │   ├── Snappy.java
-│   │   │   └── FiscalYear.java
+│   │   │   └── Snappy.java
 │   │   ├── repository/                # Data access layer
 │   │   ├── service/                   # Business logic
-│   │   ├── controller/                # REST endpoints
+│   │   ├── controller/                # REST and View controllers
+│   │   │   ├── AgencyController.java
+│   │   │   ├── CategoryController.java
+│   │   │   ├── SnappyController.java
+│   │   │   └── ViewController.java
 │   │   └── BackendApplication.java
 │   └── src/main/resources/
-│       ├── application.properties
-│       ├── data.sql                   # Sample data
-│       └── jrxml/                     # Jasper report templates
-│           ├── year1/
-│           └── year2/
-├── frontend/                          # Vue.js application
+│       ├── application.yml
+│       ├── templates/                 # Thymeleaf templates
+│       │   ├── categories-simple.html # Categories management page
+│       │   ├── categories.html        # Advanced version (with CDN)
+│       │   └── layout.html
+│       └── static/                    # Static resources
+│           ├── css/
+│           │   └── custom.css
+│           └── js/
+│               ├── spinner.js         # Reusable spinner component
+│               └── categories.js      # Category page logic
+├── frontend/                          # Vue.js application (alternative)
 │   ├── src/
 │   │   ├── pages/
 │   │   │   ├── CategoryPage.vue
@@ -117,7 +130,18 @@ mvn spring-boot:run
 
 Backend will start on `http://localhost:8080`
 
-### Run Frontend (Development)
+### Access Thymeleaf UI
+Once the backend is running, access the Thymeleaf-based UI at:
+- Categories Management: `http://localhost:8080/categories`
+
+The Thymeleaf implementation includes:
+- **Responsive Design**: Modern CSS-based responsive layout
+- **Spinner Components**: Visual feedback during REST API calls
+- **Table Features**: Sorting by column, search/filter functionality
+- **Form Validation**: Client-side validation with user feedback
+- **Success/Error Messages**: Auto-dismissing alerts for user actions
+
+### Run Vue Frontend (Development)
 ```bash
 cd frontend
 npm run dev

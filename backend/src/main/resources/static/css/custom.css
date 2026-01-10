@@ -1,0 +1,56 @@
+/* Custom styles for Budget Book Application */
+
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: none;
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 500;
+}
+
+/* Button spinner alignment */
+.btn .spinner-border {
+    vertical-align: middle;
+    margin-left: 0.25rem;
+}
+
+/* DataTables custom styling */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0.25rem 0.5rem;
+}
+
+/* Alert auto-dismiss animation */
+.alert {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading state for select elements */
+select:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+/* Responsive table improvements */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+}
