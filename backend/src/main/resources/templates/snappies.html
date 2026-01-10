@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snappy Management - Budget Book</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: #0d6efd;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar-brand {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+        }
+        
+        .card-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .text-muted {
+            color: #6c757d;
+            font-size: 0.95rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: #0d6efd;
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background-color: #0b5ed7;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #5c636a;
+        }
+        
+        .btn-outline-primary {
+            background-color: white;
+            color: #0d6efd;
+            border: 1px solid #0d6efd;
+        }
+        
+        .btn-outline-primary:hover:not(:disabled) {
+            background-color: #0d6efd;
+            color: white;
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #0d6efd;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .alert.show {
+            display: block;
+        }
+        
+        .alert-success {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc;
+        }
+        
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        
+        th,
+        td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        th:hover {
+            background-color: #e9ecef;
+        }
+        
+        tbody tr {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal.show {
+            display: block;
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 2% auto;
+            padding: 0;
+            border: 1px solid #888;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+        }
+        
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1;
+        }
+        
+        .close:hover {
+            color: #000;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .required {
+            color: #dc3545;
+        }
+        
+        .section-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .readonly {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a class="navbar-brand" href="/">Budget Book Application</a>
+        <div class="nav-links">
+            <a href="/snappies" class="active">Snappies</a>
+            <a href="/categories">Categories</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2>Snappy Management</h2>
+        <p class="text-muted">Manage budget snappies with fiscal year and agency filtering</p>
+
+        <!-- Filters -->
+        <div class="card">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fiscalYearSelect">Fiscal Year:</label>
+                    <select id="fiscalYearSelect">
+                        <option value="">-- Select Fiscal Year --</option>
+                        <option value="year1">Year 1</option>
+                        <option value="year2">Year 2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="agencySelect">Agency:</label>
+                    <select id="agencySelect">
+                        <option value="">Loading agencies...</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Snappies Table -->
+        <div class="card">
+            <div class="card-header">
+                <span>Snappies List</span>
+                <button id="refreshBtn" class="btn btn-outline-primary">
+                    <span class="btn-text">Refresh</span>
+                    <span class="spinner"></span>
+                </button>
+            </div>
+            <table id="snappiesTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Budget Code</th>
+                        <th>Category</th>
+                        <th>Decision Status</th>
+                        <th>Sort Order</th>
+                    </tr>
+                </thead>
+                <tbody id="snappiesBody">
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 2rem;">
+                            Please select fiscal year and agency to view snappies
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Edit Snappy Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Edit Snappy</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="snappyForm">
+                    <input type="hidden" id="snappyId">
+                    
+                    <!-- Basic Info -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="modalFiscalYear">Fiscal Year</label>
+                            <input type="text" id="modalFiscalYear" class="readonly" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="modalAgency">Agency</label>
+                            <input type="text" id="modalAgency" class="readonly" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="budgetCodeSelect">Budget Code <span class="required">*</span></label>
+                            <select id="budgetCodeSelect" required>
+                                <option value="">Loading...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="categorySelect">Category</label>
+                            <select id="categorySelect">
+                                <option value="">None</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="decisionStatus">Decision Status <span class="required">*</span></label>
+                            <select id="decisionStatus" required>
+                                <option value="in">In</option>
+                                <option value="out">Out</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sortOrder">Sort Order</label>
+                            <input type="number" id="sortOrder" min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="title">Snappy Title <span class="required">*</span></label>
+                        <input type="text" id="title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Snappy Description</label>
+                        <textarea id="description"></textarea>
+                    </div>
+                    
+                    <!-- Year 1 Fields -->
+                    <div class="section-header">Year 1 Budget Details</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="y1RecurringReq">Recurring Requirements</label>
+                            <input type="number" id="y1RecurringReq" step="0.01" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="y1NonRecurringReq">Non-Recurring Requirements</label>
+                            <input type="number" id="y1NonRecurringReq" step="0.01" value="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="y1RecurringRec">Recurring Receipts</label>
+                            <input type="number" id="y1RecurringRec" step="0.01" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="y1NonRecurringRec">Non-Recurring Receipts</label>
+                            <input type="number" id="y1NonRecurringRec" step="0.01" value="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="y1RecurringFte">Recurring FTE</label>
+                            <input type="number" id="y1RecurringFte" step="0.001" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="y1NonRecurringFte">Non-Recurring FTE</label>
+                            <input type="number" id="y1NonRecurringFte" step="0.001" value="0">
+                        </div>
+                    </div>
+                    
+                    <!-- Year 2 Fields -->
+                    <div class="section-header">Year 2 Budget Details</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="y2RecurringReq">Recurring Requirements</label>
+                            <input type="number" id="y2RecurringReq" step="0.01" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="y2NonRecurringReq">Non-Recurring Requirements</label>
+                            <input type="number" id="y2NonRecurringReq" step="0.01" value="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="y2RecurringRec">Recurring Receipts</label>
+                            <input type="number" id="y2RecurringRec" step="0.01" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="y2NonRecurringRec">Non-Recurring Receipts</label>
+                            <input type="number" id="y2NonRecurringRec" step="0.01" value="0">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="y2RecurringFte">Recurring FTE</label>
+                            <input type="number" id="y2RecurringFte" step="0.001" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="y2NonRecurringFte">Non-Recurring FTE</label>
+                            <input type="number" id="y2NonRecurringFte" step="0.001" value="0">
+                        </div>
+                    </div>
+                </form>
+                <div id="modalMessage" class="alert"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveBtn">
+                    <span class="btn-text">Save</span>
+                    <span class="spinner"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page-specific script -->
+    <script>
+        let currentFiscalYear = null;
+        let currentAgencyId = null;
+        let currentAgencyName = null;
+        let snappiesData = [];
+        let budgetCodes = [];
+        let categories = [];
+
+        function showButtonSpinner(button) {
+            button.disabled = true;
+            const text = button.querySelector('.btn-text');
+            const spinner = button.querySelector('.spinner');
+            if (text) text.style.display = 'none';
+            if (spinner) spinner.style.display = 'block';
+        }
+
+        function hideButtonSpinner(button) {
+            button.disabled = false;
+            const text = button.querySelector('.btn-text');
+            const spinner = button.querySelector('.spinner');
+            if (text) text.style.display = 'inline';
+            if (spinner) spinner.style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load agencies
+            loadAgencies();
+            
+            // Fiscal year selection handler
+            document.getElementById('fiscalYearSelect').addEventListener('change', function() {
+                currentFiscalYear = this.value;
+                if (currentFiscalYear && currentAgencyId) {
+                    loadSnappies();
+                }
+            });
+            
+            // Agency selection handler
+            document.getElementById('agencySelect').addEventListener('change', function() {
+                currentAgencyId = this.value;
+                const selectedOption = this.options[this.selectedIndex];
+                currentAgencyName = selectedOption.text;
+                if (currentFiscalYear && currentAgencyId) {
+                    loadSnappies();
+                    loadBudgetCodes();
+                    loadCategories();
+                }
+            });
+            
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                if (currentFiscalYear && currentAgencyId) {
+                    loadSnappies();
+                }
+            });
+            
+            // Modal close buttons
+            document.querySelector('.close').addEventListener('click', closeModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+            
+            // Save button
+            document.getElementById('saveBtn').addEventListener('click', saveSnappy);
+            
+            // Close modal on outside click
+            window.addEventListener('click', function(event) {
+                const modal = document.getElementById('editModal');
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+
+        function loadAgencies() {
+            fetch('/api/agencies')
+                .then(r => r.json())
+                .then(data => {
+                    const select = document.getElementById('agencySelect');
+                    select.innerHTML = '<option value="">-- Select an Agency --</option>';
+                    data.forEach(agency => {
+                        const option = document.createElement('option');
+                        option.value = agency.id;
+                        option.textContent = agency.name;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading agencies:', error);
+                });
+        }
+
+        function loadSnappies() {
+            const btn = document.getElementById('refreshBtn');
+            showButtonSpinner(btn);
+            
+            fetch('/api/snappies/by-agency/' + currentAgencyId)
+                .then(r => r.json())
+                .then(data => {
+                    hideButtonSpinner(btn);
+                    snappiesData = data;
+                    renderTable(data);
+                })
+                .catch(error => {
+                    hideButtonSpinner(btn);
+                    console.error('Error loading snappies:', error);
+                });
+        }
+
+        function loadBudgetCodes() {
+            fetch('/api/budget-codes/by-agency/' + currentAgencyId)
+                .then(r => r.json())
+                .then(data => {
+                    budgetCodes = data;
+                })
+                .catch(error => {
+                    console.error('Error loading budget codes:', error);
+                });
+        }
+
+        function loadCategories() {
+            fetch('/api/categories/by-agency/' + currentAgencyId)
+                .then(r => r.json())
+                .then(data => {
+                    categories = data;
+                })
+                .catch(error => {
+                    console.error('Error loading categories:', error);
+                });
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('snappiesBody');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem;">No snappies found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = data.map(snappy => `
+                <tr onclick="editSnappy(${snappy.id})">
+                    <td>${snappy.title || ''}</td>
+                    <td>${snappy.budgetCode ? snappy.budgetCode.code + ' - ' + snappy.budgetCode.description : ''}</td>
+                    <td>${snappy.category ? snappy.category.title : 'N/A'}</td>
+                    <td>${snappy.decisionStatus || ''}</td>
+                    <td>${snappy.sortOrder || ''}</td>
+                </tr>
+            `).join('');
+        }
+
+        function editSnappy(id) {
+            fetch('/api/snappies/' + id)
+                .then(r => r.json())
+                .then(snappy => {
+                    document.getElementById('snappyId').value = snappy.id;
+                    document.getElementById('modalTitle').textContent = 'Edit Snappy';
+                    document.getElementById('modalFiscalYear').value = currentFiscalYear === 'year1' ? 'Year 1' : 'Year 2';
+                    document.getElementById('modalAgency').value = currentAgencyName;
+                    
+                    // Populate budget codes
+                    const budgetCodeSelect = document.getElementById('budgetCodeSelect');
+                    budgetCodeSelect.innerHTML = '<option value="">-- Select Budget Code --</option>';
+                    budgetCodes.forEach(bc => {
+                        const option = document.createElement('option');
+                        option.value = bc.id;
+                        option.textContent = bc.code + ' - ' + bc.description;
+                        option.selected = snappy.budgetCode && snappy.budgetCode.id === bc.id;
+                        budgetCodeSelect.appendChild(option);
+                    });
+                    
+                    // Populate categories
+                    const categorySelect = document.getElementById('categorySelect');
+                    categorySelect.innerHTML = '<option value="">None</option>';
+                    categories.forEach(cat => {
+                        const option = document.createElement('option');
+                        option.value = cat.id;
+                        option.textContent = cat.title;
+                        option.selected = snappy.category && snappy.category.id === cat.id;
+                        categorySelect.appendChild(option);
+                    });
+                    
+                    // Populate form fields
+                    document.getElementById('decisionStatus').value = snappy.decisionStatus || 'in';
+                    document.getElementById('sortOrder').value = snappy.sortOrder || '';
+                    document.getElementById('title').value = snappy.title || '';
+                    document.getElementById('description').value = snappy.shortDescription || '';
+                    
+                    // Year 1
+                    document.getElementById('y1RecurringReq').value = snappy.y1RecurringReq || 0;
+                    document.getElementById('y1NonRecurringReq').value = snappy.y1NonRecurringReq || 0;
+                    document.getElementById('y1RecurringRec').value = snappy.y1RecurringRec || 0;
+                    document.getElementById('y1NonRecurringRec').value = snappy.y1NonRecurringRec || 0;
+                    document.getElementById('y1RecurringFte').value = snappy.y1RecurringFte || 0;
+                    document.getElementById('y1NonRecurringFte').value = snappy.y1NonRecurringFte || 0;
+                    
+                    // Year 2
+                    document.getElementById('y2RecurringReq').value = snappy.y2RecurringReq || 0;
+                    document.getElementById('y2NonRecurringReq').value = snappy.y2NonRecurringReq || 0;
+                    document.getElementById('y2RecurringRec').value = snappy.y2RecurringRec || 0;
+                    document.getElementById('y2NonRecurringRec').value = snappy.y2NonRecurringRec || 0;
+                    document.getElementById('y2RecurringFte').value = snappy.y2RecurringFte || 0;
+                    document.getElementById('y2NonRecurringFte').value = snappy.y2NonRecurringFte || 0;
+                    
+                    document.getElementById('editModal').classList.add('show');
+                })
+                .catch(error => {
+                    console.error('Error loading snappy:', error);
+                });
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').classList.remove('show');
+            document.getElementById('snappyForm').reset();
+            document.getElementById('modalMessage').classList.remove('show');
+        }
+
+        function saveSnappy() {
+            const id = document.getElementById('snappyId').value;
+            const budgetCodeId = document.getElementById('budgetCodeSelect').value;
+            const categoryId = document.getElementById('categorySelect').value;
+            
+            if (!budgetCodeId) {
+                showModalMessage('Please select a budget code', 'danger');
+                return;
+            }
+            
+            const snappyData = {
+                id: id,
+                agency: { id: currentAgencyId },
+                budgetCode: { id: budgetCodeId },
+                category: categoryId ? { id: categoryId } : null,
+                decisionStatus: document.getElementById('decisionStatus').value,
+                sortOrder: document.getElementById('sortOrder').value || null,
+                title: document.getElementById('title').value,
+                shortDescription: document.getElementById('description').value,
+                y1RecurringReq: document.getElementById('y1RecurringReq').value,
+                y1NonRecurringReq: document.getElementById('y1NonRecurringReq').value,
+                y1RecurringRec: document.getElementById('y1RecurringRec').value,
+                y1NonRecurringRec: document.getElementById('y1NonRecurringRec').value,
+                y1RecurringFte: document.getElementById('y1RecurringFte').value,
+                y1NonRecurringFte: document.getElementById('y1NonRecurringFte').value,
+                y2RecurringReq: document.getElementById('y2RecurringReq').value,
+                y2NonRecurringReq: document.getElementById('y2NonRecurringReq').value,
+                y2RecurringRec: document.getElementById('y2RecurringRec').value,
+                y2NonRecurringRec: document.getElementById('y2NonRecurringRec').value,
+                y2RecurringFte: document.getElementById('y2RecurringFte').value,
+                y2NonRecurringFte: document.getElementById('y2NonRecurringFte').value
+            };
+            
+            const btn = document.getElementById('saveBtn');
+            showButtonSpinner(btn);
+            
+            fetch('/api/snappies/' + id, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(snappyData)
+            })
+            .then(r => {
+                if (!r.ok) throw new Error('Failed to save');
+                return r.json();
+            })
+            .then(data => {
+                hideButtonSpinner(btn);
+                showModalMessage('Snappy saved successfully', 'success');
+                setTimeout(() => {
+                    closeModal();
+                    loadSnappies();
+                }, 1000);
+            })
+            .catch(error => {
+                hideButtonSpinner(btn);
+                console.error('Error saving snappy:', error);
+                showModalMessage('Failed to save snappy', 'danger');
+            });
+        }
+
+        function showModalMessage(message, type) {
+            const messageDiv = document.getElementById('modalMessage');
+            messageDiv.className = 'alert alert-' + type + ' show';
+            messageDiv.textContent = message;
+        }
+    </script>
+</body>
+</html>

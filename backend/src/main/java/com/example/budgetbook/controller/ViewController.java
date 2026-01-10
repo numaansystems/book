@@ -8,11 +8,16 @@ public class ViewController {
     
     @GetMapping("/")
     public String index() {
-        return "redirect:/categories";
+        return "redirect:/snappies";
     }
     
     @GetMapping("/categories")
     public String categoriesPage() {
         return "categories-simple";
+    }
+    
+    @GetMapping("/snappies")
+    public String snappiesPage() {
+        return "snappies";
     }
 }
